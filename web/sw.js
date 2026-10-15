@@ -1,11 +1,11 @@
 // Service worker: permite instalar la app y usarla sin conexión.
 // Sube el número de versión cuando publiques cambios para refrescar la caché.
-const CACHE = "finanzas-v1";
+const CACHE = "finanzas-v2";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE).then((c) =>
-      c.addAll(["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./icon-192.png", "./icon-512.png"])
+      c.addAll(["./", "./index.html", "./manifest.webmanifest", "./responsive.css", "./icon.svg", "./icon-192.png", "./icon-512.png"])
     ).then(() => self.skipWaiting())
   );
 });
@@ -30,6 +30,17 @@ self.addEventListener("fetch", (event) => {
         caches.open(CACHE).then((c) => c.put("./index.html", copy));
         return res;
       }).catch(() => caches.match("./index.html"))
+    );
+    return;
+  }
+
+  // Archivos sin hash en el nombre (responsive.css, manifest, íconos): red primero.
+  if (!new URL(req.url).pathname.includes("/assets/")) {
+    event.respondWith(
+      fetch(req).then((res) => {
+        if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
+        return res;
+      }).catch(() => caches.match(req))
     );
     return;
   }

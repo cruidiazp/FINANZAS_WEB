@@ -4,6 +4,7 @@ App de finanzas personales (ingresos, gastos, transferencias, cuentas, metas y p
 
 - Los datos se guardan **solo en el navegador** (localStorage) del dispositivo donde se usa. No hay servidor ni base de datos.
 - Usa **Ajustes → Exportar respaldo** para guardar tus datos; en web se descarga un archivo `.json`.
+- Diseño adaptable: móvil (barra inferior), tablet (2 columnas) y PC (barra lateral + panel amplio). Los estilos de escritorio están en `web/responsive.css`.
 - Se puede instalar en el celular o en el computador (“Agregar a pantalla de inicio” / “Instalar app”).
 
 ## Publicar en GitHub Pages
@@ -24,7 +25,7 @@ python3 -m http.server 8080 --directory web
 
 ## Estructura
 
-- `web/` – sitio estático (build original de la app + `manifest.webmanifest`, `sw.js` e íconos).
+- `web/` – sitio estático (build original de la app + `responsive.css`, `manifest.webmanifest`, `sw.js` e íconos).
 - `.github/workflows/pages.yml` – despliegue automático.
 
 ## Notas

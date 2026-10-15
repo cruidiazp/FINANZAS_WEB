@@ -1,0 +1,127 @@
+/* ============================================================
+   Finanzas – diseño adaptable (móvil · tablet · escritorio)
+   Se carga después del CSS original; el móvil queda intacto.
+   ============================================================ */
+
+/* Cursor y hover para mouse (no afecta pantallas táctiles) */
+@media (hover: hover) {
+  button, .pressable, .chip, .nav-item, .fab { cursor: pointer; }
+  .list-item:hover, .settings-item:hover { background: var(--surface-2); border-radius: 12px; }
+  .card.pressable:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+  .nav-item:hover { color: var(--text); }
+  .icon-btn:hover { background: var(--surface-2); }
+}
+
+/* ---------- TABLET (≥ 700px): contenido más ancho, dos columnas ---------- */
+@media (min-width: 700px) {
+  .app { max-width: 880px; }
+  .screen { padding-left: 32px; padding-right: 32px; }
+  .chips { margin: 0 -32px; padding: 2px 32px 6px; }
+  .nav { max-width: 560px; }
+  .sheet { max-width: 620px; }
+
+  /* Inicio */
+  .screen > div:has(> .hero) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+    align-items: start;
+  }
+  .screen > div:has(> .hero) > .screen-header { grid-column: 1 / -1; }
+  .screen > div:has(> .hero) > .hero { grid-column: 1 / -1; }
+  .screen > div:has(> .hero) > .section { margin-top: 24px; min-width: 0; }
+  /* secciones que contienen gráficos o listas largas ocupan todo el ancho */
+  .screen > div:has(> .hero) > .section:has(.chart-box) { grid-column: 1 / -1; }
+
+  /* Metas: tarjetas en dos columnas */
+  .screen .stack:has(> button.card.pressable) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .segmented { max-width: 420px; }
+}
+
+/* ---------- ESCRITORIO (≥ 1100px): barra lateral + panel amplio ---------- */
+@media (min-width: 1100px) {
+  :root { --side-w: 248px; }
+
+  .app { max-width: none; margin: 0; }
+
+  /* Navegación → barra lateral */
+  .nav {
+    left: 0; top: 0; bottom: 0; transform: none;
+    width: var(--side-w); max-width: none; height: auto;
+    border-radius: 0; border-width: 0 1px 0 0;
+    background: var(--surface);
+    display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+    padding: 28px 16px;
+    box-shadow: none;
+  }
+  .nav::before {
+    content: "Finanzas";
+    order: -2; display: block;
+    font-size: 22px; font-weight: 800; letter-spacing: -.03em;
+    padding: 4px 14px 22px;
+    background: var(--brand-grad); -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent; width: fit-content;
+  }
+  .nav .fab {
+    order: -1; width: 100%; height: 52px; margin: 0 0 14px;
+    transform: none; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-weight: 700; font-size: 14px;
+  }
+  .nav .fab::after { content: "Nuevo movimiento"; }
+  .nav .fab svg { flex: none; }
+  .nav-item {
+    flex-direction: row; justify-content: flex-start; gap: 12px;
+    height: 48px; padding: 0 14px; border-radius: 14px;
+    font-size: 14px; width: 100%;
+  }
+  .nav-item .dot { display: none; }
+  .nav-item.active { background: color-mix(in srgb, var(--primary) 14%, transparent); color: var(--text); }
+  .nav-item .nav-icon { height: auto; }
+
+  /* Panel principal */
+  .screen {
+    padding: 36px 56px 56px calc(var(--side-w) + 56px);
+    scrollbar-width: thin;
+  }
+  .screen::-webkit-scrollbar { display: block; width: 10px; }
+  .screen::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 99px; border: 2px solid var(--bg); }
+  .screen > div { max-width: 1180px; margin: 0 auto; }
+  .chips { margin: 0; padding: 2px 0 6px; flex-wrap: wrap; overflow: visible; }
+  .screen-title { font-size: 30px; }
+
+  /* Inicio: tres columnas */
+  .screen > div:has(> .hero) { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 28px; }
+  .screen > div:has(> .hero) > .hero { grid-column: 1 / 3; padding: 28px 28px 26px; }
+  .screen > div:has(> .hero) > .hero .hero-amount { font-size: 44px; }
+  .screen > div:has(> .hero) > .hero .hero-stat .v { font-size: 15px; }
+  .screen > div:has(> .hero) > .hero + .section { grid-column: 3; grid-row: 2 / span 2; margin-top: 0; }
+  .screen > div:has(> .hero) > .hero + .section .chips { flex-direction: column; flex-wrap: nowrap; }
+  .screen > div:has(> .hero) > .hero + .section .chips > * { width: 100%; }
+  .screen > div:has(> .hero) > .section:has(.chart-box) { grid-column: span 2; }
+  .chart-box { height: 280px; }
+
+  /* Movimientos: filtros a la izquierda, lista a la derecha */
+  .screen > div:has(> .month-switch) {
+    display: grid; grid-template-columns: 340px minmax(0, 1fr);
+    grid-template-rows: repeat(6, min-content) 1fr; column-gap: 36px; align-items: start;
+  }
+  .screen > div:has(> .month-switch) > * { grid-column: 1; min-width: 0; }
+  .screen > div:has(> .month-switch) > .screen-header { grid-column: 1 / -1; }
+  .screen > div:has(> .month-switch) > .screen-header ~ * { grid-row: auto; }
+  .screen > div:has(> .month-switch) > .screen-header + .month-switch { grid-row: 2; }
+  .screen > div:has(> .month-switch) > div:last-child { grid-column: 2; grid-row: 2 / -1; }
+
+  /* Metas / Ajustes: columna centrada y cómoda */
+  .screen > div:has(> .settings-group) { max-width: 760px; }
+  .segmented { max-width: 460px; }
+
+  /* Modales: tarjeta centrada en lugar de hoja inferior */
+  .sheet { bottom: 4vh; max-height: 92vh; max-width: 600px; border-radius: 28px; }
+  .fullscreen { max-width: 520px; }
+}
+
+/* Pantallas muy grandes */
+@media (min-width: 1700px) {
+  .screen > div { max-width: 1320px; }
+}
